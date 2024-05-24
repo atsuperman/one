@@ -23,6 +23,7 @@
             display: flex;
             background-color: white;
             overflow: hidden;
+            margin-bottom: 20px;
         }
         .line-numbers {
             padding: 10px;
@@ -31,7 +32,7 @@
             text-align: right;
             user-select: none;
         }
-        #editor {
+        .editor, .output {
             width: 100%;
             height: 100%;
             border: none;
@@ -40,18 +41,6 @@
             font-size: 14pt;
             overflow: auto;
             white-space: pre;
-            box-sizing: border-box;
-        }
-        #output {
-            width: 80%;
-            height: 35vh;
-            border: 1px solid #ccc;
-            margin-top: 20px;
-            background-color: #f7f7f7;
-            font-size: 14pt;
-            white-space: pre-wrap;
-            padding: 10px;
-            overflow: auto;
             box-sizing: border-box;
         }
         .controls {
@@ -67,9 +56,12 @@
 <body>
     <div class="editor-container">
         <div id="line-numbers" class="line-numbers"></div>
-        <textarea id="editor" oninput="updateEditor()"></textarea>
+        <textarea id="editor" class="editor" oninput="updateEditor()"></textarea>
     </div>
-    <pre id="output"></pre>
+    <div class="editor-container">
+        <div id="line-numbers-output" class="line-numbers"></div>
+        <pre id="output" class="output"></pre>
+    </div>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
         <button onclick="copyToClipboard()">Copy raw</button>
@@ -80,10 +72,13 @@
         const editor = document.getElementById('editor');
         const lineNumbers = document.getElementById('line-numbers');
         const output = document.getElementById('output');
+        const lineNumbersOutput = document.getElementById('line-numbers-output');
 
         function updateLineNumbers() {
             const lines = editor.value.split('\n').length;
-            lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+            const lineNumHtml = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+            lineNumbers.innerHTML = lineNumHtml;
+            lineNumbersOutput.innerHTML = lineNumHtml;
         }
 
         function updateEditor() {
