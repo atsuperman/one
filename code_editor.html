@@ -63,11 +63,18 @@
         }
         .controls {
             margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        button {
+        button, input[type="number"] {
             padding: 10px 20px;
             font-size: 16px;
+            margin: 5px;
             cursor: pointer;
+        }
+        input[type="number"] {
+            width: 60px;
         }
     </style>
 </head>
@@ -83,6 +90,11 @@
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
         <button onclick="copyToClipboard()">Copy raw</button>
+        <div>
+            <input type="number" id="startLine" placeholder="Start line">
+            <input type="number" id="endLine" placeholder="End line">
+        </div>
+        <button onclick="shuffleLines()">Shuffle Lines</button>
     </div>
 
     <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.14.0/js/lib/beautify.js"></script>
@@ -127,6 +139,32 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             alert('Code copied to clipboard!');
+        }
+
+        function shuffleLines() {
+            const startLine = parseInt(document.getElementById('startLine').value);
+            const endLine = parseInt(document.getElementById('endLine').value);
+
+            if (isNaN(startLine) || isNaN(endLine) || startLine < 1 || endLine < startLine) {
+                alert('Please enter valid line numbers');
+                return;
+            }
+
+            const lines = editor.value.split('\n');
+            const linesToShuffle = lines.slice(startLine - 1, endLine);
+            for (let i = linesToShuffle.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [linesToShuffle[i], linesToShuffle[j]] = [linesToShuffle[j], linesToShuffle[i]];
+            }
+
+            const newLines = [
+                ...lines.slice(0, startLine - 1),
+                ...linesToShuffle,
+                ...lines.slice(endLine)
+            ];
+
+            editor.value = newLines.join('\n');
+            updateEditor();
         }
 
         // Initial setup
