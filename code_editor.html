@@ -27,7 +27,7 @@
             font-size: 14pt;
             margin-bottom: 20px;
         }
-        .line-numbers {
+        .line-numbers, .output-line-numbers {
             padding: 10px;
             background-color: #eee;
             color: #888;
@@ -105,7 +105,8 @@
         }
 
         function updateOutput() {
-            output.textContent = editor.value;
+            const lines = editor.value.split('\n').map(line => line || ' ');
+            output.innerHTML = lines.join('\n');
         }
 
         function formatCode() {
