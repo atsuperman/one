@@ -26,14 +26,16 @@
             margin-bottom: 20px;
         }
         .line-numbers {
-            padding: 10px;
+            width: 50px;
+            padding: 10px 0;
             background-color: #eee;
             color: #888;
             text-align: right;
             user-select: none;
+            line-height: 1.5;
         }
         .editor, .output {
-            width: 100%;
+            width: calc(100% - 50px);
             height: 100%;
             border: none;
             resize: none;
@@ -42,6 +44,7 @@
             overflow: auto;
             white-space: pre;
             box-sizing: border-box;
+            line-height: 1.5;
         }
         .controls {
             margin: 20px 0;
@@ -113,6 +116,15 @@
         // Initial setup
         updateLineNumbers();
         updateOutput();
+
+        // Synchronize scrolling between the editor and line numbers
+        editor.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = editor.scrollTop;
+        });
+
+        output.addEventListener('scroll', () => {
+            lineNumbersOutput.scrollTop = output.scrollTop;
+        });
     </script>
 </body>
 </html>
