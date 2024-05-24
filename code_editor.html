@@ -16,10 +16,11 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
-        #editor {
+        #editor, #output {
             width: 80%;
-            height: 70vh;
+            height: 35vh;
             border: 1px solid #ccc;
+            margin-bottom: 20px;
         }
         .controls {
             margin: 20px 0;
@@ -37,6 +38,7 @@
     <div id="editor">function hello() {
     console.log("Hello, world!");
 }</div>
+    <div id="output"></div>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
@@ -44,6 +46,8 @@
 
     <script>
         var editor = ace.edit("editor");
+        var output = ace.edit("output");
+        
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/javascript");
         editor.setOptions({
@@ -51,6 +55,17 @@
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: true
+        });
+
+        output.setTheme("ace/theme/monokai");
+        output.session.setMode("ace/mode/javascript");
+        output.setOptions({
+            fontSize: "14pt",
+            readOnly: true
+        });
+
+        editor.getSession().on('change', function() {
+            output.setValue(editor.getValue(), -1);
         });
 
         function formatCode() {
