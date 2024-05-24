@@ -16,7 +16,7 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
-        .editor-container, .output-container {
+        .container {
             width: 80%;
             height: 35vh;
             border: 1px solid #ccc;
@@ -27,7 +27,7 @@
             font-size: 14pt;
             margin-bottom: 20px;
         }
-        .line-numbers, .output-line-numbers {
+        .line-numbers {
             padding: 10px;
             background-color: #eee;
             color: #888;
@@ -58,6 +58,9 @@
             bottom: 0;
             left: 50px;
         }
+        .output-area {
+            background-color: #f7f7f7;
+        }
         .controls {
             margin: 20px 0;
         }
@@ -69,13 +72,13 @@
     </style>
 </head>
 <body>
-    <div class="editor-container">
+    <div class="container">
         <div id="line-numbers" class="line-numbers"></div>
         <textarea id="editor" class="code-area" oninput="updateEditor()"></textarea>
     </div>
-    <div class="output-container">
-        <div id="line-numbers-output" class="output-line-numbers"></div>
-        <pre id="output" class="output-area"></pre>
+    <div class="container">
+        <div id="line-numbers-output" class="line-numbers"></div>
+        <pre id="output" class="code-area output-area"></pre>
     </div>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
