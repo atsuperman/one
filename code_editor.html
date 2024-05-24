@@ -21,6 +21,10 @@
             height: 35vh;
             border: 1px solid #ccc;
             margin-bottom: 20px;
+            font-size: 14pt;
+        }
+        #output {
+            background-color: #f7f7f7;
         }
         .controls {
             margin: 20px 0;
@@ -38,15 +42,14 @@
     <div id="editor">function hello() {
     console.log("Hello, world!");
 }</div>
-    <div id="output"></div>
+    <pre id="output"></pre>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
-        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        <button onclick="copyToClipboard()">Copy raw</button>
     </div>
 
     <script>
         var editor = ace.edit("editor");
-        var output = ace.edit("output");
         
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/javascript");
@@ -57,21 +60,19 @@
             enableSnippets: true
         });
 
-        output.setTheme("ace/theme/monokai");
-        output.session.setMode("ace/mode/javascript");
-        output.setOptions({
-            fontSize: "14pt",
-            readOnly: true
-        });
+        function updateOutput() {
+            var code = editor.getValue();
+            document.getElementById("output").textContent = code;
+        }
 
-        editor.getSession().on('change', function() {
-            output.setValue(editor.getValue(), -1);
-        });
+        editor.getSession().on('change', updateOutput);
+        updateOutput();
 
         function formatCode() {
             var code = editor.getValue();
             var formattedCode = js_beautify(code, { indent_size: 2, space_in_empty_paren: true });
             editor.setValue(formattedCode, -1);
+            updateOutput();
         }
 
         function copyToClipboard() {
