@@ -16,15 +16,23 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
-        #editor, #output {
+        #editor {
             width: 80%;
             height: 35vh;
             border: 1px solid #ccc;
-            margin-bottom: 20px;
             font-size: 14pt;
+            background-color: white;
         }
         #output {
+            width: 80%;
+            height: 35vh;
+            border: 1px solid #ccc;
+            margin-top: 20px;
             background-color: #f7f7f7;
+            font-size: 14pt;
+            white-space: pre-wrap;
+            padding: 10px;
+            overflow: auto;
         }
         .controls {
             margin: 20px 0;
@@ -35,48 +43,38 @@
             cursor: pointer;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-G2bMloRNE7A8NsXx2O+F3VY82PK5mUowf8WlOMTtwsa8sRFS++BknH5gGxCvn+NOFeLT9W6fHINB8KqqYPVZ3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.14.0/js/lib/beautify.js"></script>
 </head>
 <body>
-    <div id="editor">function hello() {
+    <pre id="editor" contenteditable="true">function hello() {
     console.log("Hello, world!");
-}</div>
+}</pre>
     <pre id="output"></pre>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
         <button onclick="copyToClipboard()">Copy raw</button>
     </div>
 
+    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.14.0/js/lib/beautify.js"></script>
     <script>
-        var editor = ace.edit("editor");
-        
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
-        editor.setOptions({
-            fontSize: "14pt",
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true
-        });
+        var editor = document.getElementById("editor");
+        var output = document.getElementById("output");
 
         function updateOutput() {
-            var code = editor.getValue();
-            document.getElementById("output").textContent = code;
+            output.textContent = editor.textContent;
         }
 
-        editor.getSession().on('change', updateOutput);
+        editor.addEventListener("input", updateOutput);
         updateOutput();
 
         function formatCode() {
-            var code = editor.getValue();
+            var code = editor.textContent;
             var formattedCode = js_beautify(code, { indent_size: 2, space_in_empty_paren: true });
-            editor.setValue(formattedCode, -1);
+            editor.textContent = formattedCode;
             updateOutput();
         }
 
         function copyToClipboard() {
-            var code = editor.getValue();
+            var code = editor.textContent;
             var tempInput = document.createElement("textarea");
             tempInput.style.position = "absolute";
             tempInput.style.left = "-99999px";
