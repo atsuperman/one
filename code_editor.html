@@ -26,9 +26,8 @@
             position: relative;
             font-size: 14pt;
             margin-bottom: 20px;
-            line-height: 1.5;
         }
-        .line-numbers {
+        .line-numbers, .line-numbers-output {
             padding: 10px;
             background-color: #eee;
             color: #888;
@@ -41,6 +40,7 @@
             left: 0;
             width: 50px;
             box-sizing: border-box;
+            line-height: 1.5;
         }
         .code-area, .output-area {
             width: calc(100% - 50px);
@@ -106,7 +106,7 @@
 
         function updateOutput() {
             const lines = editor.value.split('\n').map(line => line || ' ');
-            output.innerHTML = lines.join('\n');
+            output.textContent = lines.join('\n');
         }
 
         function formatCode() {
