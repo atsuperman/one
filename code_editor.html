@@ -23,18 +23,25 @@
             display: flex;
             background-color: white;
             overflow: hidden;
-            margin-bottom: 20px;
+            position: relative;
+            font-size: 14pt;
         }
         .line-numbers {
-            width: 50px;
-            padding: 10px 0;
+            padding: 10px;
             background-color: #eee;
             color: #888;
             text-align: right;
             user-select: none;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            box-sizing: border-box;
             line-height: 1.5;
         }
-        .editor, .output {
+        .code-area {
             width: calc(100% - 50px);
             height: 100%;
             border: none;
@@ -45,6 +52,10 @@
             white-space: pre;
             box-sizing: border-box;
             line-height: 1.5;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50px;
         }
         .controls {
             margin: 20px 0;
@@ -54,16 +65,56 @@
             font-size: 16px;
             cursor: pointer;
         }
+        .output-container {
+            width: 80%;
+            height: 35vh;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            background-color: #f7f7f7;
+            overflow: hidden;
+            position: relative;
+            font-size: 14pt;
+        }
+        .output-line-numbers {
+            padding: 10px;
+            background-color: #eee;
+            color: #888;
+            text-align: right;
+            user-select: none;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+        .output-area {
+            width: calc(100% - 50px);
+            height: 100%;
+            border: none;
+            padding: 10px;
+            font-size: 14pt;
+            overflow: auto;
+            white-space: pre;
+            box-sizing: border-box;
+            line-height: 1.5;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50px;
+        }
     </style>
 </head>
 <body>
     <div class="editor-container">
         <div id="line-numbers" class="line-numbers"></div>
-        <textarea id="editor" class="editor" oninput="updateEditor()"></textarea>
+        <textarea id="editor" class="code-area" oninput="updateEditor()"></textarea>
     </div>
-    <div class="editor-container">
-        <div id="line-numbers-output" class="line-numbers"></div>
-        <pre id="output" class="output"></pre>
+    <div class="output-container">
+        <div id="line-numbers-output" class="output-line-numbers"></div>
+        <pre id="output" class="output-area"></pre>
     </div>
     <div class="controls">
         <button onclick="formatCode()">Format Code</button>
